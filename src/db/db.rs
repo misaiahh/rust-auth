@@ -14,5 +14,5 @@ struct Code {
 }
 
 pub fn verify() -> bool {
-    true
+    false
 }
