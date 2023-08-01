@@ -5,8 +5,8 @@ extern crate rocket;
 mod db;
 
 #[get("/")]
-fn index() -> &'static str {
-    let result = db::verify();
+async fn index() -> &'static str {
+    let result = db::verify().await;
 
     match result {
         true => "Verified",
