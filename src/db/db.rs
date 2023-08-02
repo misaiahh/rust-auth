@@ -16,19 +16,23 @@ use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
 async fn get_pool() -> Result<Pool<Postgres>, sqlx::Error> {
     let url = "postgresql://postgres:postgres@db:5432/postgres";
-    // let pool = sqlx::postgres::PgPool::connect(url).await?;
-    let pool = PgPoolOptions::new().connect(url).await?;
 
-    Ok(pool)
+    match PgPoolOptions::new().max_connections(5).connect(url).await {
+        Ok(pool) => Ok(pool),
+        Err(error) => {
+            println!("[get_pool] {}", error);
+            Err(error)
+        }
+    }
 }
 
 pub async fn verify() -> bool {
     let pool = get_pool().await.unwrap();
 
-    let res = sqlx::query("SELECT 1 + 1 as sum;")
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let result = sqlx::query("SELECT 1 + 1 as sum;").fetch_one(&pool).await;
 
-    false
+    match result {
+        Ok(_row) => true,
+        Err(_) => false,
+    }
 }
