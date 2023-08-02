@@ -1,4 +1,4 @@
-// provides connection(s) and access to a postgress database
+// X provides connection(s) and access to a postgress database
 // pull connection string from env
 // provide a method to verify if a registration code is valid
 // provide a method to claim the registion code
@@ -31,15 +31,17 @@ pub async fn verify() -> bool {
 
     match pool_or_none {
         Some(pool) => {
-            let result = sqlx::query("SELECT 1 + 1 as sum;").fetch_one(&pool).await;
-
-            match result {
+            let response = sqlx::query("SELECT 1 + 1 as sum;").fetch_one(&pool).await;
+            let result = match response {
                 Ok(_row) => true,
                 Err(e) => {
                     println!("[verify] {}", e);
                     false
                 }
-            }
+            };
+            pool.close().await;
+
+            result
         }
         None => false,
     }
