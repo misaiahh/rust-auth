@@ -14,25 +14,33 @@ use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 //     owned_by: Option<String>,
 // }
 
-async fn get_pool() -> Result<Pool<Postgres>, sqlx::Error> {
+async fn get_pool() -> Option<Pool<Postgres>> {
     let url = "postgresql://postgres:postgres@db:5432/postgres";
 
     match PgPoolOptions::new().max_connections(5).connect(url).await {
-        Ok(pool) => Ok(pool),
-        Err(error) => {
-            println!("[get_pool] {}", error);
-            Err(error)
+        Ok(pool) => Some(pool),
+        Err(e) => {
+            println!("[get_pool] {}", e);
+            None
         }
     }
 }
 
 pub async fn verify() -> bool {
-    let pool = get_pool().await.unwrap();
+    let pool_or_none = get_pool().await;
 
-    let result = sqlx::query("SELECT 1 + 1 as sum;").fetch_one(&pool).await;
+    match pool_or_none {
+        Some(pool) => {
+            let result = sqlx::query("SELECT 1 + 1 as sum;").fetch_one(&pool).await;
 
-    match result {
-        Ok(_row) => true,
-        Err(_) => false,
+            match result {
+                Ok(_row) => true,
+                Err(e) => {
+                    println!("[verify] {}", e);
+                    false
+                }
+            }
+        }
+        None => false,
     }
 }
