@@ -1,4 +1,4 @@
-// provides connection(s) and access to a postgress database
+// X provides connection(s) and access to a postgress database
 // pull connection string from env
 // provide a method to verify if a registration code is valid
 // provide a method to claim the registion code
@@ -14,21 +14,35 @@ use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 //     owned_by: Option<String>,
 // }
 
-async fn get_pool() -> Result<Pool<Postgres>, sqlx::Error> {
+async fn get_pool() -> Option<Pool<Postgres>> {
     let url = "postgresql://postgres:postgres@db:5432/postgres";
-    // let pool = sqlx::postgres::PgPool::connect(url).await?;
-    let pool = PgPoolOptions::new().connect(url).await?;
 
-    Ok(pool)
+    match PgPoolOptions::new().max_connections(5).connect(url).await {
+        Ok(pool) => Some(pool),
+        Err(e) => {
+            println!("[get_pool] {}", e);
+            None
+        }
+    }
 }
 
 pub async fn verify() -> bool {
-    let pool = get_pool().await.unwrap();
+    let pool_or_none = get_pool().await;
 
-    let res = sqlx::query("SELECT 1 + 1 as sum;")
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    match pool_or_none {
+        Some(pool) => {
+            let response = sqlx::query("SELECT 1 + 1 as sum;").fetch_one(&pool).await;
+            let result = match response {
+                Ok(_row) => true,
+                Err(e) => {
+                    println!("[verify] {}", e);
+                    false
+                }
+            };
+            pool.close().await;
 
-    false
+            result
+        }
+        None => false,
+    }
 }
