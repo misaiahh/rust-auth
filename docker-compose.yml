@@ -4,6 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    env_file:
+      - ./config/.env
     volumes:
       - ./:/app
     ports:
