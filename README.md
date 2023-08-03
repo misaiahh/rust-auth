@@ -5,3 +5,7 @@ Dockerfile commands
 `docker run -p 8080:8080 --name CONTAINER_NAME -t IMAGE_NAME`
 
 `docker start CONTAINER_NAME`
+
+docker-compose command(s)
+
+`docker-compose up --build`

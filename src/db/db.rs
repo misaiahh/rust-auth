@@ -1,5 +1,5 @@
 // X provides connection(s) and access to a postgress database
-// pull connection string from env
+// X pull connection string from env
 // provide a method to verify if a registration code is valid
 // provide a method to claim the registion code
 // provide a method to save a users: email and password
