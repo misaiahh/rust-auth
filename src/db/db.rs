@@ -5,6 +5,7 @@
 // provide a method to save a users: email and password
 // hash and salt the password
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
+use std::env;
 
 // struct RegistrationKey {
 //     created_at: String,
@@ -15,9 +16,13 @@ use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 // }
 
 async fn get_pool() -> Option<Pool<Postgres>> {
-    let url = "postgresql://postgres:postgres@db:5432/postgres";
+    let port = env::var("DB_PORT").unwrap();
+    let username = env::var("DB_USER").unwrap();
+    let password = env::var("DB_PASS").unwrap();
+    let name = env::var("DB_NAME").unwrap();
+    let url = format!("postgresql://{username}:{password}@db:{port}/{name}");
 
-    match PgPoolOptions::new().max_connections(5).connect(url).await {
+    match PgPoolOptions::new().max_connections(5).connect(&url).await {
         Ok(pool) => Some(pool),
         Err(e) => {
             println!("[get_pool] {}", e);
