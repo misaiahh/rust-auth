@@ -4,6 +4,7 @@
 // provide a method to claim the registion code
 // provide a method to save a users: email and password
 // hash and salt the password
+use sqlx::FromRow;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use std::env;
 
@@ -14,6 +15,11 @@ use std::env;
 //     claimed: bool,
 //     owned_by: Option<String>,
 // }
+
+#[derive(FromRow)]
+struct Data {
+    sum: i32,
+}
 
 async fn get_pool() -> Option<Pool<Postgres>> {
     let port = env::var("DB_PORT").unwrap();
@@ -36,9 +42,14 @@ pub async fn verify() -> bool {
 
     match pool_or_none {
         Some(pool) => {
-            let response = sqlx::query("SELECT 1 + 1 as sum;").fetch_one(&pool).await;
+            let response = sqlx::query_as::<_, Data>("SELECT 1 + 1 as sum;")
+                .fetch_one(&pool)
+                .await;
             let result = match response {
-                Ok(_row) => true,
+                Ok(row) => {
+                    println!("SUM IS {}", row.sum);
+                    true
+                }
                 Err(e) => {
                     println!("[verify] {}", e);
                     false
