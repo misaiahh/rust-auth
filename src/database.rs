@@ -2,7 +2,7 @@ mod models;
 mod utils;
 
 use models::Data;
-pub use utils::get_pool;
+use utils::get_pool;
 
 pub async fn get_sum() -> i32 {
     let pool = get_pool().await;
