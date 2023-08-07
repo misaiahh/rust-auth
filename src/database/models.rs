@@ -5,10 +5,10 @@ pub struct Data {
     pub sum: i32,
 }
 
-#[derive(Debug, FromRow)]
+#[derive(Debug, sqlx::FromRow)]
 pub struct RegistrationKeys {
-    pub id: i64,
-    pub key: String,
-    pub owned: bool,
-    pub owned_by: i64,
+    pub id: i32,
+    pub registration_key: String,
+    // pub owned: bool,
+    // pub owned_by: i64,
 }

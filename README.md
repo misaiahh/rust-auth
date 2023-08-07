@@ -1,3 +1,7 @@
+Local Development
+
+`cargo watch -x run`
+
 Dockerfile commands
 
 `docker build -t IMAGE_NAME .`
@@ -6,6 +10,6 @@ Dockerfile commands
 
 `docker start CONTAINER_NAME`
 
-docker-compose command(s)
+docker-compose command(s) *Updated to only launch postgres for local development*
 
 `docker-compose up --build`

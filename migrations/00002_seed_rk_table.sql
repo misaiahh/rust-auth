@@ -1,14 +1,14 @@
 INSERT INTO
-    RegistrationKeys (key)
+    RegistrationKeys (registration_key)
 VALUES
     ('ABCD');
 
 INSERT INTO
-    RegistrationKeys (key)
+    RegistrationKeys (registration_key)
 VALUES
     ('EFGH');
 
 INSERT INTO
-    RegistrationKeys (key)
+    RegistrationKeys (registration_key)
 VALUES
     ('IJKL');
