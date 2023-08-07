@@ -11,7 +11,7 @@ sqlx = { version = "0.7", features = [
     "runtime-tokio-rustls",
     "macros",
 ] }
+sqlx-cli = { version = "0.7.1", default-features = false, features = ["native-tls", "postgres"] }
+cargo-watch = "8.4.0"
 
 [dev-dependencies]
-cargo-watch = "8.4.0"
-sqlx-cli = "0.7.1"
