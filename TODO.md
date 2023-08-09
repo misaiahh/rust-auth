@@ -6,18 +6,18 @@ X Choose between MySQL and Postgres: Postgres due to it being better for enterpr
 
 X Create docker-compose for Postgres and Auth app
 
-? Create volume mounts for both containers
+X Create volume mounts for both containers
 
 X Update Dockerfile to use the container for development instead of local machine. Do we need a nodemon equivelent for Rust?
 
 Implement Rust app code to talk to Postgres
   - X Create connection pool for database? Is this necessary as the auth app should not share the db with other apps?
   Create 
-  - table `RegistrationKeys`
+  - X table `RegistrationKeys`
   - table `Users`
-  - seed data for db
+  - X seed data for db
 
 X Configure network for communication between app and db
 
-Create `Orchistration` project for monorepo
-    Move docker-compose here
+X Create `Orchistration` project for monorepo
+    X Move docker-compose here

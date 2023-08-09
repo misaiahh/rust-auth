@@ -1,6 +1,11 @@
 target
 Dockerfile
+Dockerfile.dev
+docker-compose.yml
 .dockerignore
 .git
 .gitignore
 TODO.md
+ISSUES.md
+README.md
+.vscode
