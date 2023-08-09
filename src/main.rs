@@ -3,10 +3,9 @@ extern crate rocket;
 use rocket::http::Status;
 use rocket::Request;
 
-mod database;
-mod service;
+mod auth_service;
 
-use service::verify;
+use auth_service::verify;
 
 #[get("/")]
 async fn index() -> &'static str {

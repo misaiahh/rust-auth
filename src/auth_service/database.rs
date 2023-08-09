@@ -6,7 +6,7 @@ use sqlx::query_as;
 use utils::get_pool;
 
 pub async fn get_sum() -> i32 {
-    let registration_key = String::from("ABCD"); //
+    let registration_key = String::from("EFGH"); //
     let pool = get_pool().await;
     let response = query_as::<_, RegistrationKeys>(
         r#"SELECT "id", "registration_key" FROM RegistrationKeys WHERE "registration_key" = $1;"#,
